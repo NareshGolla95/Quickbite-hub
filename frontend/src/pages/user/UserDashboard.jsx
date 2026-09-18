@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Search, ShoppingCart, LogOut, CheckCircle, Star } from 'lucide-react';
 import useStore from '../../store';
+import { API_URL } from "../../api";
 
 const UserDashboard = () => {
   const [items, setItems] = useState([]);
@@ -34,7 +35,7 @@ const UserDashboard = () => {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/items');
+      const res = await axios.get(`${API_URL}/api/items`);
       setItems(res.data);
     } catch (err) {
       console.error(err);
@@ -44,7 +45,7 @@ const UserDashboard = () => {
   const fetchOrders = async () => {
     try {
       if (!user) return;
-      const res = await axios.get(`http://localhost:5000/api/orders/user/${user.id}`);
+      const res = await axios.get(`${API_URL}/api/orders/user/${user.id}`);
       setOrders(res.data);
     } catch (err) {
       console.error(err);
@@ -70,7 +71,7 @@ const UserDashboard = () => {
   const handleFeedbackSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/feedbacks', {
+      await axios.post(`${API_URL}/api/feedbacks`, {
         user: user.id,
         order: feedbackOrder._id,
         ...feedback
@@ -84,7 +85,7 @@ const UserDashboard = () => {
 
   const loadAllFeedbacks = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/feedbacks');
+      const res = await axios.get(`${API_URL}/api/feedbacks`);
       setAllFeedbacks(res.data);
       setShowFeedbacksModal(true);
     } catch (err) {

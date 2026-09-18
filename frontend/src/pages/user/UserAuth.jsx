@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { UserCircle } from 'lucide-react';
 import useStore from '../../store';
+import { API_URL } from "../../api";
 
 const UserAuth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -27,7 +28,7 @@ const UserAuth = () => {
     try {
       if (isLogin) {
         const res = await axios.post(
-          'http://localhost:5000/api/auth/login',
+          `${API_URL}/api/auth/login`,
           {
             email: formData.email,
             password: formData.password,
@@ -40,7 +41,7 @@ const UserAuth = () => {
         navigate('/user/dashboard');
       } else {
         const res = await axios.post(
-          'http://localhost:5000/api/auth/register',
+          `${API_URL}/api/auth/register`,
           {
             ...formData,
             role: 'user'

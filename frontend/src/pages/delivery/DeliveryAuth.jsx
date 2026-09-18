@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Bike } from 'lucide-react';
 import useStore from '../../store';
+import { API_URL } from "../../api";
 
 const DeliveryAuth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -28,7 +29,7 @@ const DeliveryAuth = () => {
     try {
       if (isLogin) {
         const res = await axios.post(
-          'http://localhost:5000/api/auth/login',
+          `${API_URL}/api/auth/login`,
           {
             email: formData.email,
             password: formData.password,
@@ -41,7 +42,7 @@ const DeliveryAuth = () => {
         navigate('/delivery/dashboard');
       } else {
         const res = await axios.post(
-          'http://localhost:5000/api/auth/register',
+          `${API_URL}/api/auth/register`,
           {
             ...formData,
             role: 'delivery'

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { LogOut, MapPin, Phone, User as UserIcon, CheckCircle } from 'lucide-react';
 import useStore from '../../store';
+import { API_URL } from "../../api";
+
 
 const DeliveryDashboard = () => {
   const [availableOrders, setAvailableOrders] = useState([]);
@@ -25,10 +27,10 @@ const DeliveryDashboard = () => {
 
   const fetchData = async () => {
     try {
-      const waitRes = await axios.get('http://localhost:5000/api/orders/waiting');
+      const waitRes = await axios.get(`${API_URL}/api/orders/waiting`);
       setAvailableOrders(waitRes.data);
 
-      const myRes = await axios.get(`http://localhost:5000/api/orders/delivery/${user.id}`);
+      const myRes = await axios.get(`${API_URL}/api/orders/delivery/${user.id}`);
       setMyOrders(myRes.data);
     } catch (err) {
       console.error(err);
@@ -44,7 +46,7 @@ const DeliveryDashboard = () => {
   const handleDeleteAccount = async () => {
     if (window.confirm('Are you sure you want to delete your account? This cannot be undone.')) {
       try {
-        await axios.delete(`http://localhost:5000/api/users/${user.id}`);
+        await axios.delete(`${API_URL}/api/users/${user.id}`);
         handleLogout();
       } catch (err) {
         console.error('Error deleting account', err);
@@ -54,7 +56,7 @@ const DeliveryDashboard = () => {
 
   const handleAccept = async (orderId) => {
     try {
-      await axios.put(`http://localhost:5000/api/orders/${orderId}/accept`, { deliveryPersonId: user.id });
+      await axios.put(`${API_URL}/api/orders/${orderId}/accept`, { deliveryPersonId: user.id });
       fetchData();
     } catch (err) {
       console.error(err);
@@ -63,7 +65,7 @@ const DeliveryDashboard = () => {
 
   const handleReached = async (orderId) => {
     try {
-      await axios.put(`http://localhost:5000/api/orders/${orderId}/reached`);
+      await axios.put(`${API_URL}/api/orders/${orderId}/reached`);
       fetchData();
     } catch (err) {
       console.error(err);
@@ -72,7 +74,7 @@ const DeliveryDashboard = () => {
 
   const handleComplete = async (orderId) => {
     try {
-      await axios.put(`http://localhost:5000/api/orders/${orderId}/complete`, { code: confirmCode });
+      await axios.put(`${API_URL}/api/orders/${orderId}/complete`, { code: confirmCode });
       setConfirmCode('');
       fetchData();
     } catch (err) {

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CheckCircle, MapPin, CreditCard, ArrowLeft } from 'lucide-react';
 import useStore from '../../store';
+import { API_URL } from "../../api";
 
 const Cart = () => {
   const { cart, user, clearCart } = useStore();
@@ -27,7 +28,7 @@ const Cart = () => {
     if (cart.length === 0) return;
     try {
       const itemsPayload = cart.map(c => ({ item: c.item._id, quantity: c.quantity, price: c.item.price }));
-      await axios.post('http://localhost:5000/api/orders', {
+      await axios.post(`${API_URL}/api/orders`, {
         userId: user.id,
         items: itemsPayload,
         totalAmount: grandTotal,

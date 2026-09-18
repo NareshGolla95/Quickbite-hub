@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { PlusCircle, Utensils, Users, MessageSquare, LogOut } from 'lucide-react';
+import { API_URL } from "../../api";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('items');
@@ -25,13 +26,13 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     try {
       if (activeTab === 'items') {
-        const res = await axios.get('http://localhost:5000/api/items');
+        const res = await axios.get(`${API_URL}/api/items`);
         setItems(res.data);
       } else if (activeTab === 'users') {
-        const res = await axios.get('http://localhost:5000/api/users');
+        const res = await axios.get(`${API_URL}/api/users`);
         setUsers(res.data);
       } else if (activeTab === 'feedback') {
-        const res = await axios.get('http://localhost:5000/api/feedbacks');
+        const res = await axios.get(`${API_URL}/api/feedbacks`);
         setFeedbacks(res.data);
       }
     } catch (err) {
@@ -42,7 +43,7 @@ const AdminDashboard = () => {
   const handleAddItem = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/items', newItem);
+      await axios.post(`${API_URL}/api/items`, newItem);
       setNewItem({ name: '', price: '', image: '', stock: '' });
       fetchData();
     } catch (err) {
@@ -52,7 +53,7 @@ const AdminDashboard = () => {
 
   const handleDeleteFeedback = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/feedbacks/${id}`);
+      await axios.delete(`${API_URL}/api/feedbacks/${id}`);
       fetchData();
     } catch (err) {
       console.error(err);
@@ -62,7 +63,7 @@ const AdminDashboard = () => {
   const handleDeleteItem = async (id) => {
     if (window.confirm('Are you sure you want to delete this item?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/items/${id}`);
+        await axios.delete(`${API_URL}/api/items/${id}`);
         fetchData();
       } catch (err) {
         console.error(err);
